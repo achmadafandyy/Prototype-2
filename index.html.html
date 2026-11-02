@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RuangBahasa | AR, VR & AI Tutor</title>
+<style>
+:root{--navy:#10243a;--blue:#176b87;--teal:#18a6a6;--gold:#f2b84b;--paper:#f4f7fa;--ink:#182433;--muted:#607080}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--paper);color:var(--ink)}
+header{background:linear-gradient(120deg,#10243a,#176b87);color:white;padding:24px clamp(18px,5vw,64px)}
+header .tag{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#aee8e4}
+h1{margin:8px 0;font-size:clamp(1.8rem,4vw,3rem)}header p{max-width:760px;line-height:1.6;color:#e0edf3;margin:0}
+main{max-width:1180px;margin:24px auto;padding:0 18px 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.panel{background:white;border:1px solid #dce5ec;border-radius:18px;padding:20px;box-shadow:0 8px 24px #17324d0d}
+h2{font-size:1.15rem;margin:0 0 12px;color:var(--navy)}h3{font-size:1rem;margin:14px 0 8px}
+.small{color:var(--muted);font-size:.9rem;line-height:1.5}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+button{border:0;border-radius:10px;padding:10px 14px;background:var(--navy);color:white;font-weight:650;cursor:pointer}
+button.secondary{background:#e8f1f5;color:var(--navy)}button.gold{background:var(--gold);color:#30230a}
+button:focus,input:focus,textarea:focus{outline:3px solid #77c9d0;outline-offset:2px}
+.scene{height:340px;border-radius:16px;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 25%,#3b8ba1,#12324b 70%);perspective:800px;color:white}
+.scene:before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 65%,#071a2b);pointer-events:none}
+.room{position:absolute;inset:35px 8%;transform-style:preserve-3d;transform:rotateX(3deg)}
+.wall{position:absolute;inset:0 0 35px;background:linear-gradient(135deg,#d9eef0,#a8d0d6);border:8px solid #547b88;box-shadow:inset 0 0 30px #315b6a;transform:translateZ(-80px)}
+.board{position:absolute;left:16%;top:15%;width:68%;height:55%;background:#f7fbf8;border:9px solid #7b6247;border-radius:5px;box-shadow:0 15px 30px #071a2b88;transform:translateZ(20px);color:#17334a;padding:16px;text-align:center}
+.board strong{display:block;font-size:clamp(1rem,2vw,1.5rem);margin-bottom:10px}
+.board span{display:block;font-size:clamp(.8rem,1.5vw,1rem);line-height:1.6}
+.desk{position:absolute;bottom:5%;left:8%;width:84%;height:18%;background:linear-gradient(#b9814f,#714a31);transform:rotateX(62deg) translateZ(55px);border-radius:8px;box-shadow:0 20px 25px #071a2b99}
+.student{position:absolute;bottom:4%;left:46%;width:48px;height:75px;border-radius:22px 22px 8px 8px;background:#e8b46d;transform:translateZ(80px);box-shadow:0 0 0 5px #173d58}
+.student:before{content:"";position:absolute;top:-28px;left:8px;width:32px;height:32px;border-radius:50%;background:#b9784b;border:3px solid #f1c68e}
+.floor{position:absolute;bottom:0;left:0;right:0;height:38px;background:repeating-linear-gradient(90deg,#9b7757 0 45px,#876447 45px 48px);transform:rotateX(70deg);transform-origin:bottom}
+.scene.ar .board{outline:5px solid var(--gold);box-shadow:0 0 0 12px #f2b84b55,0 15px 30px #071a2b88}
+.scene.ar .board:after{content:"AR • ANOTASI";position:absolute;right:-15px;top:-25px;background:var(--gold);color:#30230a;font-size:.7rem;font-weight:800;padding:5px 8px;border-radius:6px}
+.scene.vr{height:390px}.scene.vr .room{transform:rotateX(5deg) rotateY(-8deg) scale(1.08)}
+.scene.vr .board{background:#f4fff8}
+.overlay{position:absolute;left:14px;bottom:12px;font-size:.75rem;color:#e7f6f7;background:#0b2639aa;padding:7px 10px;border-radius:8px}
+.task{background:#f1f7f8;border-left:4px solid var(--teal);padding:12px;border-radius:8px;line-height:1.55}
+textarea,input{width:100%;border:1px solid #cbd8e1;border-radius:10px;padding:11px;font:inherit}
+textarea{min-height:105px;resize:vertical}
+.feedback{background:#f8f5e9;border:1px solid #eadcae;padding:13px;border-radius:10px;line-height:1.55;white-space:pre-wrap}
+.pill{display:inline-block;background:#e4f4f2;color:#11645f;padding:5px 9px;border-radius:30px;font-size:.75rem;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:18px}
+@media(max-width:800px){main{grid-template-columns:1fr}.scene{height:300px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="tag">Mini Project • Media Pembelajaran Interaktif</div>
+ <h1>RuangBahasa</h1>
+ <p>Laboratorium imersif untuk memahami kalimat efektif dan paragraf ilmiah. Jelajahi ruang belajar 3D, aktifkan anotasi AR, lalu gunakan AI Tutor untuk memperoleh umpan balik atas tulisan.</p>
+</header>
+<main>
+<section class="panel">
+ <span class="pill">Eksplorasi AR / VR</span>
+ <h2 style="margin-top:12px">Ruang Praktik Bahasa Indonesia</h2>
+ <p class="small">Pilih mode untuk melihat konsep pembelajaran dalam ruang 3D. Pada prototipe ini, AR/VR ditampilkan sebagai simulasi antarmuka berbasis web untuk uji alur dan pengalaman pengguna.</p>
+ <div class="controls">
+  <button id="normalBtn" class="secondary">Mode Ruang</button>
+  <button id="arBtn" class="gold">Aktifkan AR</button>
+  <button id="vrBtn">Masuk Mode VR</button>
+ </div>
+ <div class="scene" id="scene" role="img" aria-label="Simulasi ruang kelas tiga dimensi dengan papan materi">
+  <div class="room"><div class="wall"></div>
+   <div class="board"><strong>Kalimat Efektif</strong><span>Jelas • Hemat • Logis • Padu</span><span style="margin-top:12px">Paragraf ilmiah: gagasan utama + kalimat penjelas</span></div>
+   <div class="desk"></div><div class="student"></div><div class="floor"></div>
+  </div><div class="overlay" id="sceneLabel">RUANG BELAJAR 3D • MODE NORMAL</div>
+ </div>
+ <h3>Misi belajar</h3>
+ <div class="task"><b>Skenario vokasi:</b> Anda diminta menulis pengumuman pemeliharaan jaringan komputer untuk pengguna laboratorium. Perbaiki kalimat agar jelas, hemat, dan tidak menimbulkan salah tafsir.</div>
+ <div class="controls"><button class="secondary" id="hintBtn">Lihat petunjuk</button><button class="secondary" id="sampleBtn">Muat contoh</button></div>
+ <div id="hint" class="small" aria-live="polite"></div>
+</section>
+<section class="panel">
+ <span class="pill">GenAI • AI Writing Tutor</span>
+ <h2 style="margin-top:12px">Uji dan perbaiki tulisan</h2>
+ <p class="small">Masukkan kalimat atau paragraf. Tutor memberi umpan balik berdasarkan prinsip kalimat efektif dan kepaduan paragraf. Untuk demonstrasi kelas, respons pada versi ini menggunakan aturan contoh lokal, bukan layanan AI eksternal.</p>
+ <label for="draft"><b>Tulisan Anda</b></label>
+ <textarea id="draft" placeholder="Contoh: Demi untuk menjaga agar jaringan tetap stabil, maka laboratorium akan dilakukan pemeliharaan."></textarea>
+ <div class="controls"><button id="reviewBtn">Analisis tulisan</button><button class="secondary" id="clearBtn">Hapus</button></div>
+ <div id="feedback" class="feedback" aria-live="polite">Umpan balik akan muncul di sini.</div>
+ <h3>Refleksi singkat</h3>
+ <p class="small">Mengapa kalimat yang hemat dan jelas penting dalam komunikasi teknis? Tulis satu alasan untuk menghubungkan materi dengan praktik kerja.</p>
+ <input id="reflection" placeholder="Tulis refleksi singkat...">
+ <div class="controls"><button class="secondary" id="saveReflection">Tampilkan refleksi</button></div>
+ <div id="reflectionOut" class="small" aria-live="polite"></div>
+</section>
+</main>
+<footer>RuangBahasa • Prototipe pembelajaran Bahasa Indonesia untuk mahasiswa vokasi bidang TIK</footer>
+<script>
+const scene=document.getElementById('scene'), label=document.getElementById('sceneLabel'), feedback=document.getElementById('feedback');
+function setMode(mode){scene.classList.remove('ar','vr');if(mode==='ar'){scene.classList.add('ar');label.textContent='SIMULASI AR • ANOTASI KONSEP PADA PAPAN';}else if(mode==='vr'){scene.classList.add('vr');label.textContent='SIMULASI VR • RUANG IMERSIF 3D';}else{label.textContent='RUANG BELAJAR 3D • MODE NORMAL';}}
+document.getElementById('normalBtn').onclick=()=>setMode('normal');
+document.getElementById('arBtn').onclick=()=>setMode('ar');
+document.getElementById('vrBtn').onclick=()=>setMode('vr');
+document.getElementById('hintBtn').onclick=()=>document.getElementById('hint').textContent='Petunjuk: hilangkan pemborosan kata, gunakan subjek dan predikat yang jelas, pilih istilah teknis yang tepat, serta pastikan informasi waktu dan tindakan tidak ambigu.';
+document.getElementById('sampleBtn').onclick=()=>document.getElementById('draft').value='Demi untuk menjaga agar jaringan tetap stabil, maka laboratorium akan dilakukan pemeliharaan pada hari Jumat.';
+document.getElementById('clearBtn').onclick=()=>{document.getElementById('draft').value='';feedback.textContent='Umpan balik akan muncul di sini.';};
+document.getElementById('reviewBtn').onclick=()=>{
+ const s=document.getElementById('draft').value.trim(); if(!s){feedback.textContent='Silakan masukkan kalimat atau paragraf terlebih dahulu.';return;}
+ let notes=[], revised=s;
+ if(/demi untuk/i.test(s)){notes.push('Hindari pemborosan “demi untuk”. Pilih salah satu: “demi” atau “untuk”.');revised=revised.replace(/demi untuk/i,'Untuk');}
+ if(/agar .* maka/i.test(revised)){notes.push('Kata “agar” dan “maka” tidak perlu digunakan bersamaan dalam pola ini.');revised=revised.replace(/agar (.*?),? maka/i,'$1');}
+ if(/akan dilakukan pemeliharaan/i.test(revised)){notes.push('Perjelas pelaku atau tindakan. Bentuk “laboratorium akan dilakukan pemeliharaan” kurang tepat karena laboratorium bukan pelaku.');revised=revised.replace(/laboratorium akan dilakukan pemeliharaan/i,'teknisi akan memelihara jaringan laboratorium');}
+ if(!/[.!?]$/.test(revised)) notes.push('Akhiri kalimat dengan tanda baca yang sesuai.');
+ if(notes.length===0) notes.push('Tidak ditemukan pola kesalahan umum pada pemeriksaan sederhana ini. Periksa kembali kejelasan subjek-predikat, ketepatan istilah, logika, dan konteks.');
+ feedback.textContent='HASIL ANALISIS (umpan balik demonstrasi)\\n• '+notes.join('\\n• ')+'\\n\\nSARAN REVISI\\n'+revised+'\\n\\nCatatan: evaluasi ini bersifat prototipe berbasis aturan. Untuk integrasi GenAI sesungguhnya, hubungkan kolom ini ke API model bahasa melalui backend yang aman dan validasi hasilnya dengan dosen.';
+};
+document.getElementById('saveReflection').onclick=()=>{const v=document.getElementById('reflection').value.trim();document.getElementById('reflectionOut').textContent=v?'Refleksi Anda: '+v:'Refleksi masih kosong.';};
+</script>
+</body></html>
